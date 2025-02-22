@@ -2,23 +2,31 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Ticket Portal</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
             font-family: 'Segoe UI', system-ui, sans-serif;
+            -webkit-tap-highlight-color: transparent; /* Убирает подсветку при тапе */
         }
 
+        /* Добавляем запрет выделения */
         body {
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
             min-height: 100vh;
             background: linear-gradient(135deg, #1a1a1a, #2d2d2d);
             display: flex;
             align-items: center;
             justify-content: center;
             overflow: hidden;
+            touch-action: manipulation; /* Блокировка жестов масштабирования */
         }
 
         .button-container {
@@ -40,6 +48,10 @@
             transition: all 0.3s ease;
             overflow: hidden;
             box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+            user-select: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
         }
 
         .ticket-button::before {
@@ -106,7 +118,61 @@
     <div class="bg-element"></div>
     
     <div class="button-container">
-        <button class="ticket-button">GET TICKET</button>
+        <button class="ticket-button" id="ticketButton">GET TICKET</button>
     </div>
+
+    <script>
+        // Инициализация Telegram Web App
+        const webApp = Telegram.WebApp;
+        
+        // Инициализируем приложение
+        webApp.ready();
+        webApp.expand();
+
+        // Обработчик для кнопки
+        document.getElementById('ticketButton').addEventListener('click', () => {
+            // Параметры платежа
+            const invoice = {
+                title: "Premium Ticket",
+                description: "Access to exclusive event",
+                currency: "XTR", // Код валюты для Telegram Stars
+                prices: [
+                    {
+                        label: "Ticket Price",
+                        amount: 10000 // 100 звёзд (в минимальных единицах)
+                    }
+                ],
+                provider_token: '7718672418:AAEHL19Qr1D2H5RJ4Erf6NAcSc_Gz-sDcSc', // Токен вашего бота
+                start_parameter: 'ticket_purchase',
+                payload: JSON.stringify({userId: webApp.initDataUnsafe.user?.id})
+            };
+
+            // Открываем платежный интерфейс
+            webApp.openInvoice(invoice, (status) => {
+                if (status === 'paid') {
+                    webApp.showAlert('Payment successful! Thank you!');
+                    // Здесь можно добавить логику после успешной оплаты
+                } else if (status === 'failed') {
+                    webApp.showAlert('Payment failed. Please try again.');
+                } else if (status === 'cancelled') {
+                    webApp.showAlert('Payment cancelled.');
+                }
+            });
+        });
+
+        // Обработчик событий платежа
+        webApp.onEvent('invoiceClosed', (eventData) => {
+            console.log('Invoice closed:', eventData);
+        });
+
+        webApp.onEvent('paymentStatusChanged', (eventData) => {
+            console.log('Payment status changed:', eventData);
+        });
+
+        // Проверка запуска внутри Telegram
+        if (!webApp.initDataUnsafe) {
+            console.log('This app should be run inside Telegram');
+        }
+    </script>
 </body>
 </html>
