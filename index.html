@@ -2,7 +2,12 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" 
+      content="width=device-width, 
+              initial-scale=1.0, 
+              maximum-scale=1.0, 
+              user-scalable=no, 
+              shrink-to-fit=no">
     <title>Event Ticket</title>
     <style>
         * {
@@ -10,6 +15,15 @@
             padding: 0;
             box-sizing: border-box;
             font-family: 'Segoe UI', sans-serif;
+        }
+
+        * {
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
+            -webkit-touch-callout: none;
         }
 
         body {
@@ -50,6 +64,13 @@
             line-height: 1.6;
         }
 
+        .button-container {
+            display: flex;
+            gap: 1.5rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
         .ticket-button {
             padding: 1.5rem 3rem;
             font-size: 1.2rem;
@@ -64,16 +85,32 @@
             box-shadow: 0 4px 15px rgba(255, 107, 107, 0.4);
         }
 
-        .ticket-button:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 6px 20px rgba(255, 107, 107, 0.6);
+        .profile-button {
+            padding: 1.5rem 3rem;
+            font-size: 1.2rem;
+            background: linear-gradient(45deg, #4a90e2, #2d6cdb);
+            border: none;
+            border-radius: 50px;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(74, 144, 226, 0.4);
+            text-decoration: none;
+            display: inline-block;
         }
 
-        .ticket-button:active {
+        .ticket-button:hover, .profile-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .ticket-button:active, .profile-button:active {
             transform: translateY(0);
         }
 
-        .ticket-button::after {
+        .ticket-button::after, .profile-button::after {
             content: '';
             position: absolute;
             top: -50%;
@@ -85,7 +122,7 @@
             transition: all 0.5s ease;
         }
 
-        .ticket-button:hover::after {
+        .ticket-button:hover::after, .profile-button:hover::after {
             left: 50%;
             top: 50%;
         }
@@ -113,6 +150,14 @@
             h1 { font-size: 2.5rem; }
             p { font-size: 1rem; padding: 0 1rem; }
             .container { margin: 1rem; }
+            .button-container {
+                flex-direction: column;
+                align-items: center;
+            }
+            .ticket-button, .profile-button {
+                width: 100%;
+                padding: 1.2rem 2rem;
+            }
         }
     </style>
 </head>
@@ -126,7 +171,13 @@
     <div class="container">
         <h1>Awesome Event 2025</h1>
         <p>Join us for an unforgettable experience filled with innovation, creativity, and inspiration. Limited tickets available - don't miss your chance!</p>
-        <button class="ticket-button">Get Ticket Now</button>
+        
+        <div class="button-container">
+            <button class="ticket-button">GET TICKET</button>
+            <a href="info.html" class="profile-button">PROFILE</a>
+        </div>
     </div>
+
+
 </body>
 </html>
