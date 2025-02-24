@@ -3,37 +3,130 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Get Ticket</title>
+    <title>Event Ticket</title>
     <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', sans-serif;
+        }
+
         body {
+            min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
-            background-color: #f4f4f4;
+            background: linear-gradient(45deg, #6a11cb, #2575fc);
+            position: relative;
+            overflow: hidden;
         }
-        button {
-            padding: 15px 30px;
-            font-size: 20px;
-            cursor: pointer;
-            background-color: #0088cc;
-            color: white;
+
+        .container {
+            text-align: center;
+            padding: 2rem;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            position: relative;
+            z-index: 1;
+            transform: translateY(0);
+            animation: float 3s ease-in-out infinite;
+        }
+
+        h1 {
+            color: #fff;
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        p {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            max-width: 600px;
+            line-height: 1.6;
+        }
+
+        .ticket-button {
+            padding: 1.5rem 3rem;
+            font-size: 1.2rem;
+            background: linear-gradient(45deg, #ff6b6b, #ff8e53);
             border: none;
-            border-radius: 5px;
+            border-radius: 50px;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(255, 107, 107, 0.4);
+        }
+
+        .ticket-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(255, 107, 107, 0.6);
+        }
+
+        .ticket-button:active {
+            transform: translateY(0);
+        }
+
+        .ticket-button::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: rgba(255, 255, 255, 0.1);
+            transform: rotate(45deg);
+            transition: all 0.5s ease;
+        }
+
+        .ticket-button:hover::after {
+            left: 50%;
+            top: 50%;
+        }
+
+        .background-circles span {
+            position: absolute;
+            width: 60px;
+            height: 60px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 50%;
+            animation: pulse 4s infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); opacity: 1; }
+            100% { transform: scale(3); opacity: 0; }
+        }
+
+        @media (max-width: 768px) {
+            h1 { font-size: 2.5rem; }
+            p { font-size: 1rem; padding: 0 1rem; }
+            .container { margin: 1rem; }
         }
     </style>
 </head>
 <body>
-    <button onclick="sendDataToBot()">GET TICKET</button>
-
-    <script>
-        function sendDataToBot() {
-            if (window.Telegram && Telegram.WebApp) {
-                Telegram.WebApp.sendData("get_ticket");
-            } else {
-                alert("Откройте в Telegram Mini App!");
-            }
-        }
-    </script>
+    <div class="background-circles">
+        <span style="top: 20%; left: 20%"></span>
+        <span style="top: 60%; right: 15%"></span>
+        <span style="bottom: 30%; left: 10%"></span>
+    </div>
+    
+    <div class="container">
+        <h1>Awesome Event 2025</h1>
+        <p>Join us for an unforgettable experience filled with innovation, creativity, and inspiration. Limited tickets available - don't miss your chance!</p>
+        <button class="ticket-button">Get Ticket Now</button>
+    </div>
 </body>
 </html>
